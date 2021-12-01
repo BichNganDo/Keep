@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('layouts/header'); -%>
+  <body>
+    <style>
+      .grid-item {
+        width: 300px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .icon:hover {
+        opacity: 0.5;
+      }
+
+      .dec-btn{
+        color: #198754;
+        text-decoration: none;
+      }
+
+      button a:hover{
+        color: white;
+      }
+    </style>
+    <!-- Header -->
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light"
+      style="border-bottom: 1px solid #ced4da"
+    >
+      <div class="container-fluid">
+        <img
+          src="/image/logo2.png"
+          alt=""
+          style="height: 42px; width: 35px; margin-right: 7px"
+        />
+        <a class="navbar-brand" href="/">Keep</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <form class="d-flex" action="/login">
+            <input
+              class="form-control me-2"
+              style="width: 30rem"
+              type="search"
+              placeholder="Tìm kiếm"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">Tìm</button>
+          </form>
+          <% if(loggedIn) { %>
+            <button type="button" class="btn btn-outline-success" style="margin-left: 960px; width: 130px;">
+              <a href="/logout" class="dec-btn">Đăng xuất</a>
+            </button>
+          <% } %>
+          <% if(!loggedIn) { %>
+          <button type="button" class="btn btn-outline-success" style="margin-left: 920px; margin-right: 30px; ">
+            <a href="/login" class="dec-btn">Đăng nhập</a>
+          </button>
+          <button type="button" class="btn btn-outline-success">
+            <a href="/register" class="dec-btn">Đăng ký</a>
+          </button>
+          <% } %>
+        </div>
+      </div>
+      <ul class="nav justify-content-end">
+        <!-- <span>Ngan Do</span> -->
+        <!-- <img
+          src="/image/cuc.png"
+          alt=""
+          style="
+            width: 50px;
+            height: 50px;
+            margin-right: 1.5rem;
+            border-radius: 2rem;
+          "
+          hidden
+        /> -->
+      </ul>
+    </nav>
+
+    <!-- main -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <div class="input-group mt-4">
+            <!-- <span class="input-group-text" id="basic-addon1">@</span> -->
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Tạo ghi chú"
+              aria-describedby="basic-addon1"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              data-bs-whatever="@mdo"
+            />
+            <% if(!loggedIn) { %>
+              <div
+                class="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form>
+                      <div class="modal-header">
+                        <p>Mời bạn đăng nhập để tạo ghi chú!</p>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+
+            <% if(loggedIn) { %>
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <form action="/notes/store" method="POST" enctype="multipart/form-data">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Tạo ghi chú
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      
+                        <div class="mb-3">
+                          <label for="title" for="title" class="col-form-label"
+                            >Tiêu đề:</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="recipient-name"
+                            name="title"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label for="note-text" for="body" class="col-form-label"
+                            >Ghi chú:</label
+                          >
+                          <textarea
+                            class="form-control"
+                            id="message-text"
+                            name="body"
+                          ></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label class="mb-2">Thêm hình ảnh</label><br>
+                          <input accept="image/*" name="image" type='file' id="imgInp" />
+                          <img class="mt-2" id="blah" onError="this.style.display = 'none';" src="#" alt="your image" style="display: block;" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                      <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <% } %>
+            
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+
+        <div class="grid" type="button">
+          <% if(loggedIn) { %>
+            <% for(var i = 0; i< notestore.length; i++) { %>
+              <div class="grid-item mt-4" >
+                <img
+                  src="<%= notestore[i].image %>"
+                  class="card-img-top mb-3"
+                  alt="..."
+                />
+                <h5><%= notestore[i].title %></h5>
+                <div>
+                  <p><%= notestore[i].body %></p>
+                </div>
+                <div>
+                  <i class="fas fa-edit icon" style="margin-right: 10px"  aria-describedby="basic-addon1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  data-bs-whatever="@mdo"></i>
+                  <i class="fas fa-trash-alt icon"></i>
+                </div>
+              </div>
+            <% } %>
+          <% } %>
+          
+          
+        
+        </div>
+      </div>
+    </div>
+
+    <%- include('layouts/script'); -%>
+
+    <script>
+
+      $(".grid").masonry({
+        // options
+        itemSelector: ".grid-item",
+        columnWidth: 320,
+      });
+
+      imgInp.onchange = evt => {
+        const [file] = imgInp.files
+        if (file) {
+          blah.src = URL.createObjectURL(file)
+          blah.style = "block";
+          blah.style = "width: 100px"
+        }
+      }
+    </script>
+  </body>
+</html>
