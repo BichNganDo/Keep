@@ -9,7 +9,7 @@
                 <div class="card text-white mb-3" style="max-width: 30rem;">
                     <div class="card-header bg-secondary text-center"><h2>Đăng ký tài khoản</h2></div>
                     <div class="card-body" style="border: 1px solid #6c757d;">
-                        <form action="/users/register" method="POST">
+                        <form action="/users/register" method="POST" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" for="email" class="form-label" style="color: black;">Email:</label>
                                 <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="Email">
@@ -18,6 +18,11 @@
                                 <label for="exampleFormControlInput1" for="password" class="form-label" style="color: black;">Password:</label>
                                 <input type="password" name="password" class="form-control" id="exampleFormControlInput1" placeholder="Password">
                             </div>
+                            <div class="mb-3">
+                                <label class="mb-2" style="color:black">Thêm hình ảnh:</label><br>
+                                <input accept="image/*" name="image" type='file' id="imgInp" style="color: black;"/>
+                                <img class="mt-2" id="blah" onError="this.style.display = 'none';" src="#" alt="your image" style="display: block;" />
+                              </div>
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-secondary" style="margin: 0px 170px;">Đăng ký</button>
                             </div>
@@ -29,6 +34,16 @@
         </div>
     </div>
     <%- include('layouts/script'); -%>
+    <script>
+        imgInp.onchange = evt => {
+        const [file] = imgInp.files
+        if (file) {
+          blah.src = URL.createObjectURL(file)
+          blah.style = "block";
+          blah.style = "width: 100px"
+        }
+      }
+    </script>
   
 </body>
 </html>

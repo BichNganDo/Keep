@@ -75,17 +75,9 @@
       </div>
       <ul class="nav justify-content-end">
         <!-- <span>Ngan Do</span> -->
-        <!-- <img
-          src="/image/cuc.png"
-          alt=""
-          style="
-            width: 50px;
-            height: 50px;
-            margin-right: 1.5rem;
-            border-radius: 2rem;
-          "
-          hidden
-        /> -->
+        <% if(loggedIn) { %>
+        <img src="/image/cuc.png" alt="" style="width: 50px; height: 50px; margin-right: 1.5rem; border-radius: 2rem;"/>
+        <% } %>
       </ul>
     </nav>
 
@@ -150,15 +142,8 @@
                     <div class="modal-body">
                       
                         <div class="mb-3">
-                          <label for="title" for="title" class="col-form-label"
-                            >Tiêu đề:</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="recipient-name"
-                            name="title"
-                          />
+                          <label for="title" for="title" class="col-form-label">Tiêu đề:</label>
+                          <input type="text" class="form-control" id="recipient-name" name="title" />
                         </div>
                         <div class="mb-3">
                           <label for="note-text" for="body" class="col-form-label"
@@ -194,28 +179,21 @@
           <% if(loggedIn) { %>
             <% for(var i = 0; i< notestore.length; i++) { %>
               <div class="grid-item mt-4" >
-                <img
-                  src="<%= notestore[i].image %>"
-                  class="card-img-top mb-3"
-                  alt="..."
-                />
+               
+                  <img src="<%= notestore[i].image %>" onError="this.style.display = 'none';" class="card-img-top mb-3" alt="..."/>
+               
                 <h5><%= notestore[i].title %></h5>
                 <div>
-                  <p><%= notestore[i].body %></p>
+                  <p style="white-space: pre-line;"><%= notestore[i].body %></p>
                 </div>
                 <div>
-                  <i class="fas fa-edit icon" style="margin-right: 10px"  aria-describedby="basic-addon1"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
+                  <i class="fas fa-edit icon" style="margin-right: 10px"  aria-describedby="basic-addon1" data-bs-toggle="modal" data-bs-target="#exampleModal"
                   data-bs-whatever="@mdo"></i>
                   <i class="fas fa-trash-alt icon"></i>
                 </div>
               </div>
             <% } %>
           <% } %>
-          
-          
-        
         </div>
       </div>
     </div>

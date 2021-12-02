@@ -30,11 +30,14 @@ app.use("*", (request, response, next) => {
   next()
 });
 
+global.isImage = ""; 
+app.use("*", (request, response, next) => {
+  isImage = request.body.image;
+  next()
+});
 
 const homeController = require("./controllers/getNote");
 app.get("/", homeController);
-
-
 
 app.get('/register', (req, res) => {
     res.render('register');
@@ -64,6 +67,10 @@ app.get("/index" ,newNoteController);
 
 const storeNoteController = require("./controllers/storeNote");
 app.post("/notes/store", storeNoteController);
+
+//logout
+const logoutController = require('./controllers/logout');
+app.get("/logout", logoutController);
 
 
 
