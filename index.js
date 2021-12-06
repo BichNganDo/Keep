@@ -27,6 +27,7 @@ mongoose.connect("mongodb://localhost/database_keep", { useNewUrlParser: true })
 global.loggedIn = null; //khai báo một biến loggedIn kiểu global, mục đích là có thể truy cập biến này trong các file EJS.
 app.use("*", (request, response, next) => {
   loggedIn = request.session.userId;
+  imageUser = request.session.image;
   next()
 });
 
@@ -38,7 +39,8 @@ app.use("*", (request, response, next) => {
 
 const homeController = require("./controllers/getNote");
 app.get("/", homeController);
-
+app.post("/", homeController);
+ 
 app.get('/register', (req, res) => {
     res.render('register');
 })
@@ -72,6 +74,18 @@ app.post("/notes/store", storeNoteController);
 const logoutController = require('./controllers/logout');
 app.get("/logout", logoutController);
 
+//delete Note
+const deleteController = require('./controllers/deleteNote');
+app.post("/delete", deleteController);
+
+//get Note by Id
+const getNoteByIdController = require('./controllers/getNoteById');
+app.get("/edit", getNoteByIdController);
+
+//editNote
+const editNoteController = require('./controllers/editNote');
+app.post("/editnote", editNoteController);
+
 
 
 
@@ -80,4 +94,4 @@ app.get("/logout", logoutController);
 
 app.listen(4000, () => {
     console.log("Port 4000");
-  });
+}); 

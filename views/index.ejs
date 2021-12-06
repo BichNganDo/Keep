@@ -36,36 +36,23 @@
           style="height: 42px; width: 35px; margin-right: 7px"
         />
         <a class="navbar-brand" href="/">Keep</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+          aria-expanded="false" aria-label="Toggle navigation" >
+          	<span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <form class="d-flex" action="/login">
-            <input
-              class="form-control me-2"
-              style="width: 30rem"
-              type="search"
-              placeholder="Tìm kiếm"
-              aria-label="Search"
-            />
+          <form class="d-flex" action="" method="POST">
+            <input class="form-control me-2" value="<%= valueSearch %>" name="query" style="width: 30rem" type="text" placeholder="Tìm kiếm" aria-label="Search"/>
             <button class="btn btn-outline-success" type="submit">Tìm</button>
           </form>
           <% if(loggedIn) { %>
             <button type="button" class="btn btn-outline-success" style="margin-left: 960px; width: 130px;">
-              <a href="/logout" class="dec-btn">Đăng xuất</a>
+              	<a href="/logout" class="dec-btn">Đăng xuất</a>
             </button>
           <% } %>
           <% if(!loggedIn) { %>
           <button type="button" class="btn btn-outline-success" style="margin-left: 920px; margin-right: 30px; ">
-            <a href="/login" class="dec-btn">Đăng nhập</a>
+            	<a href="/login" class="dec-btn">Đăng nhập</a>
           </button>
           <button type="button" class="btn btn-outline-success">
             <a href="/register" class="dec-btn">Đăng ký</a>
@@ -76,7 +63,10 @@
       <ul class="nav justify-content-end">
         <!-- <span>Ngan Do</span> -->
         <% if(loggedIn) { %>
-        <img src="/image/cuc.png" alt="" style="width: 50px; height: 50px; margin-right: 1.5rem; border-radius: 2rem;"/>
+          <img src="<%= imageUser %>" onError="this.style.display = 'none';" alt="" style="width: 50px; height: 50px; margin-right: 1.5rem; border-radius: 2rem;border: 1px solid #198754;"/>
+            <% if(!imageUser) { %>
+              <img src="/image/unnamed.png" alt="" style="width: 50px; height: 50px; margin-right: 1.5rem; border-radius: 2rem; border: 1px solid #198754;"/>
+            <% } %>
         <% } %>
       </ul>
     </nav>
@@ -156,14 +146,14 @@
                           ></textarea>
                         </div>
                         <div class="mb-3">
-                          <label class="mb-2">Thêm hình ảnh</label><br>
+                          <label class="mb-2">Thêm hình ảnh:</label><br>
                           <input accept="image/*" name="image" type='file' id="imgInp" />
                           <img class="mt-2" id="blah" onError="this.style.display = 'none';" src="#" alt="your image" style="display: block;" />
                         </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                      <button type="submit" class="btn btn-primary">Lưu</button>
+                      <button type="submit" class="btn btn-primary">Tạo mới</button>
                     </div>
                   </form>
                 </div>
@@ -177,7 +167,7 @@
 
         <div class="grid" type="button">
           <% if(loggedIn) { %>
-            <% for(var i = 0; i< notestore.length; i++) { %>
+            <% for(var i = notestore.length-1; i>=0; i--) { %>
               <div class="grid-item mt-4" >
                
                   <img src="<%= notestore[i].image %>" onError="this.style.display = 'none';" class="card-img-top mb-3" alt="..."/>
@@ -187,13 +177,50 @@
                   <p style="white-space: pre-line;"><%= notestore[i].body %></p>
                 </div>
                 <div>
-                  <i class="fas fa-edit icon" style="margin-right: 10px"  aria-describedby="basic-addon1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                  data-bs-whatever="@mdo"></i>
-                  <i class="fas fa-trash-alt icon"></i>
+                  <i class="fas fa-edit icon" style="margin-right: 10px"  aria-describedby="basic-addon1" data-bs-target="#exampleModal1"
+                  data-bs-whatever="@mdo" data-bs-toggle="modal" onclick="getNoteById(`<%= notestore[i]._id %>`)"></i>
+                  <i class="fas fa-trash-alt icon" onclick="deleteNote(`<%= notestore[i]._id %>`)"></i>
                 </div>
               </div>
-            <% } %>
+              <% } %>
+            <!-- sửa ghi chú -->
+              <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                Sửa ghi chú
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" class="form-control" id="id-note" name="Id" hidden />
+                                <div class="mb-3">
+                                    <label for="title" class="col-form-label">Tiêu đề:</label>
+                                    <input type="text" class="form-control" id="title" name="title" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="body" class="col-form-label">Ghi chú:</label>
+                                    <textarea class="form-control" rows="5" id="body" name="body"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-2">Thêm hình ảnh:</label><br>
+                                    <input accept="image/*" name="image" type='file' id="imgInp2" />
+                                    <img class="mt-2" id="blah2" onError="this.style.display = 'none';" src="#" style="display: block;" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary" onclick="editNote()">Lưu</button>
+                            </div>
+                        </form>
+                    </div>  
+                </div>
+              </div>
+            
           <% } %>
+        
         </div>
       </div>
     </div>
@@ -216,6 +243,92 @@
           blah.style = "width: 100px"
         }
       }
+
+      function deleteNote(id) {
+        // console.log("d " + id);
+        if (confirm("Bạn có muốn xóa không?")) {
+          $.ajax({
+              url: "/delete",
+              type: "POST",
+              dataType: "json",
+              contentType: 'application/json',
+              data: JSON.stringify({
+                  id: id
+              }),
+              success(response) {
+                  if (response.errorCode >= 0) {
+                      console.log("success");
+                      window.location.href="/";
+                  } else {
+                      console.log("fail");
+                  }
+
+              }
+          })
+        }
+      }
+
+      function getNoteById(id) {
+        $.ajax({
+          url: "/edit",
+          type: "GET",
+          dataType: "json",
+          data: {
+            id: id
+          },
+          success(response) {
+            console.log(response);
+            $("#id-note").val(response._id);
+            $("#title").val(response.title);
+            $("#body").val(response.body); //blah
+            if(response.image) {
+              $("#blah2").attr("src", response.image).css({"display" : "block", "width" : "100px"});
+            } else {
+              $("#blah2").attr("src", response.image);
+            }
+            
+          }
+        })
+      }
+
+      imgInp2.onchange = evt => {
+        const [file] = imgInp2.files
+        if (file) {
+          blah2.src = URL.createObjectURL(file)
+          blah2.style = "block";
+          blah2.style = "width: 100px"
+        }
+      }
+
+      function editNote() {
+        console.log("edit note");
+        var id = $("#id-note").val();
+        var title = $("#title").val();
+        var body = $("#body").val();
+         var image = $("#blah2").prop("src");
+        $.ajax({
+            url: "/editnote",
+            type: "POST",
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify({
+              id: id,
+              title: title,
+              body: body,
+              image: image
+            }),
+            success(response) {
+              console.log("Ngannnnn", response);
+                if (response.errorCode >= 0) {
+                    console.log("success");
+                    window.location.href="/";
+                } else {
+                    console.log("fail");
+                }
+            }
+        })
+      }
+
     </script>
   </body>
 </html>

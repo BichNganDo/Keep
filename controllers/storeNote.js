@@ -1,7 +1,7 @@
 const Note = require("../models/Note.js");
 const path = require("path");
 module.exports = (request, response) => {
-  // console.log(request.body);
+  console.log("create");
   if(!!request.files){
     let image = request.files.image;
     let idUser = request.session.userId;
