@@ -2,11 +2,12 @@ const Note = require("../models/Note.js");
 const path = require("path");
 module.exports = (request, response) => {
   console.log("create");
+  console.log(__dirname);
   if(!!request.files){
     let image = request.files.image;
     let idUser = request.session.userId;
     image.mv(
-      path.resolve("/home/ngan/Code/GoogleKeep/public/upload", image.name),
+      path.resolve(__dirname, "../public/upload", image.name),
       function (error) {
           Note.create(
           {

@@ -4,7 +4,7 @@ module.exports = (req, res) => {
     if(!!req.files){
         let image = req.files.image;
         image.mv(
-            path.resolve("/home/ngan/Code/GoogleKeep/public/avatar", image.name),
+            path.resolve(__dirname, "../public/avatar", image.name),
             function (error) {
                 User.create(
                 {
