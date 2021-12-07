@@ -45,11 +45,11 @@
             <input class="form-control me-2" value="<%= valueSearch %>" name="query" style="width: 30rem" type="text" placeholder="Tìm kiếm" aria-label="Search"/>
             <button class="btn btn-outline-success" type="submit">Tìm</button>
           </form>
-          <% if(loggedIn) { %>
+          <!-- <% if(loggedIn) { %>
             <button type="button" class="btn btn-outline-success" style="margin-left: 960px; width: 130px;">
               	<a href="/logout" class="dec-btn">Đăng xuất</a>
             </button>
-          <% } %>
+          <% } %> -->
           <% if(!loggedIn) { %>
           <button type="button" class="btn btn-outline-success" style="margin-left: 920px; margin-right: 30px; ">
             	<a href="/login" class="dec-btn">Đăng nhập</a>
@@ -63,13 +63,28 @@
       <ul class="nav justify-content-end">
         <!-- <span>Ngan Do</span> -->
         <% if(loggedIn) { %>
-          <img src="<%= imageUser %>" onError="this.style.display = 'none';" alt="" style="width: 50px; height: 50px; margin-right: 1.5rem; border-radius: 2rem;border: 1px solid #198754;"/>
+          <div class="dropdown">
+            
+            <button class="btn dropdown-toggle" style="margin-right: 70px" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="<%= imageUser %>" onError="this.style.display = 'none';" alt="" style="width: 50px; height: 50px; border-radius: 2rem;border: 1px solid #198754;"/>
             <% if(!imageUser) { %>
-              <img src="/image/unnamed.png" alt="" style="width: 50px; height: 50px; margin-right: 1.5rem; border-radius: 2rem; border: 1px solid #198754;"/>
+              <img src="/image/unnamed.png" alt="" style="width: 50px; height: 50px; border-radius: 2rem; border: 1px solid #198754;"/>
             <% } %>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+              <!-- <li><button class="dropdown-item" type="button">Another action</button></li>
+              <li><button class="dropdown-item" type="button">Something else here</button></li> -->
+            </ul>
+          </div>
+          
         <% } %>
+        
       </ul>
     </nav>
+
+
+
 
     <!-- main -->
     <div class="container">
